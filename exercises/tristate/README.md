@@ -15,14 +15,15 @@ Testbench 使用另一个连续赋值模拟 Flash 对 `dq` 的驱动；同一根
 
 ## 功能波形
 
-`sdo=4'b1010`；Flash 在接收阶段驱动 `4'b0101`。
+`sdo=4'b1010`。`0` 是空闲高阻，`1` 是只驱动 DQ0，`2` 是 Flash 同时驱动 DQ1，`3` 是四线发送，`4` 是 Flash 四线输入。每一列对应 VCD 中同编号的 `doc_point`；`z` 表示高阻。
 
 ```wavedrom
 { "signal": [
-  {"name":"mode", "wave":"=.=.=.=", "data":["idle","single TX","quad TX","quad RX"]},
-  {"name":"flash_oe", "wave":"0....1."},
-  {"name":"dq", "wave":"z.=.=.=", "data":["zzz0","1010","0101"]},
-  {"name":"sdi", "wave":"z.=.=.=", "data":["zzz0","1010","0101"]}
+  {"name":"sample", "wave":"=====", "data":["0","1","2","3","4"]},
+  {"name":"mode", "wave":"==.==", "data":["0","1","2","0"]},
+  {"name":"ext_oe", "wave":"=.===", "data":["0","2","0","15"]},
+  {"name":"dq", "wave":"=====", "data":["zzzz","zzz0","zz00","1010","0101"]},
+  {"name":"sdi", "wave":"=====", "data":["zzzz","zzz0","zz00","1010","0101"]}
 ]}
 ```
 
@@ -33,3 +34,4 @@ make tristate
 ```
 
 Testbench 检查高阻、DQ0 单线驱动、Flash 驱动 DQ1、四线发送和四线接收。成功打印 `RESULT: PASS tristate`。
+完整时序保存在 `sim/tristate.vcd`；测试命令还会逐列核对上图与 VCD。

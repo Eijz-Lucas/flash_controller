@@ -8,16 +8,16 @@
 
 ## 功能波形
 
-`div=1`，每两拍翻转；SPI Mode 0 的发送端可在下降沿更新，接收端在上升沿采样。
+每一列是 VCD 中的 `doc_point`。`0` 为复位，`1`～`4` 是 `div=1` 使能后的连续四个系统时钟上升沿，`5` 为禁用，`6`～`7` 是 `div=0` 的两个上升沿。`rise_pulse` 和 `fall_pulse` 与翻转后的 `sclk` 同拍有效。
 
 ```wavedrom
 { "signal": [
-  {"name":"clk", "wave":"p......."},
-  {"name":"en", "wave":"1......."},
-  {"name":"div", "wave":"=.......", "data":["1"]},
-  {"name":"sclk", "wave":"0.1.0.1."},
-  {"name":"rise_pulse", "wave":"0.10..10"},
-  {"name":"fall_pulse", "wave":"0...10.."}
+  {"name":"sample", "wave":"========", "data":["0","1","2","3","4","5","6","7"]},
+  {"name":"en", "wave":"01111011"},
+  {"name":"div", "wave":"=.....=.", "data":["1","0"]},
+  {"name":"sclk", "wave":"00110010"},
+  {"name":"rise_pulse", "wave":"00100010"},
+  {"name":"fall_pulse", "wave":"00001001"}
 ]}
 ```
 
@@ -28,3 +28,4 @@ make clkdiv
 ```
 
 Testbench 检查复位、`div=1` 的半周期、上升/下降脉冲、停钟清相位、`div=0`。成功打印 `RESULT: PASS clkdiv`。
+完整时序保存在 `sim/clkdiv.vcd`；测试命令还会逐列核对上图与 VCD。

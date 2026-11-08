@@ -15,19 +15,17 @@
 
 ## 功能波形
 
-下面的 `0x2A` 写入在 access 相末尾被采纳，随后读回；波形中的 `|` 表示采样边沿。
+每一列是 Testbench 在 VCD 中用 `doc_point` 标出的观测点；列宽不代表等长时间。`0` 是复位后的空闲，`1` 是写 setup，`2` 是写 access（写入上升沿之前），`3` 是写入上升沿之后，`4` 是读 setup，`5` 是读 access。`clk_div` 在 `2` 仍为 3，在 `3` 才变成 `0x2A`。
 
 ```wavedrom
 { "signal": [
-  {"name":"clk", "wave":"p....."},
-  {"name":"psel", "wave":"01...0"},
-  {"name":"penable", "wave":"0.1.0."},
-  {"name":"pwrite", "wave":"01.0.."},
-  {"name":"paddr", "wave":"x.=.=x", "data":["0x00","0x00"]},
-  {"name":"pwdata", "wave":"x.=...", "data":["0x2A"]},
-  {"name":"pready", "wave":"0.1.0."},
+  {"name":"sample", "wave":"======", "data":["0","1","2","3","4","5"]},
+  {"name":"psel", "wave":"011011"},
+  {"name":"penable", "wave":"001001"},
+  {"name":"pwrite", "wave":"011000"},
+  {"name":"pready", "wave":"001001"},
   {"name":"clk_div", "wave":"=..=..", "data":["3","0x2A"]},
-  {"name":"prdata", "wave":"x...=." , "data":["0x2A"]}
+  {"name":"prdata", "wave":"=..=..", "data":["3","0x2A"]}
 ]}
 ```
 
@@ -39,3 +37,4 @@ make apb
 ```
 
 Testbench 检查复位值、两相握手、写入和读回、只读状态、未映射地址及命令脉冲。通过时末行是 `RESULT: PASS apb`；失败时打印 `FAIL apb` 并退出。
+完整时序保存在 `sim/apb.vcd`；测试命令还会逐列核对上图与 VCD。

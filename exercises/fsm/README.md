@@ -8,19 +8,15 @@
 
 ## 功能波形
 
-带地址和 dummy 的读事务：
+每一列是 VCD 中的 `doc_point`。`0`～`7` 是带地址和 dummy 的读事务（`2` 等待命令完成）；`8`～`10` 是跳过地址和 dummy 的写事务。`phase` 使用上文固定的数字编码。列宽不代表等长时间。
 
 ```wavedrom
 { "signal": [
-  {"name":"clk", "wave":"p......."},
-  {"name":"start", "wave":"10......"},
-  {"name":"cmd_done", "wave":"0.10...."},
-  {"name":"addr_done", "wave":"0..10..."},
-  {"name":"dummy_done", "wave":"0...10.."},
-  {"name":"data_done", "wave":"0.....10"},
-  {"name":"phase", "wave":"=.=.=.=.=.=", "data":["IDLE","CMD","ADDR","DUMMY","DATA_RX","IDLE"]},
-  {"name":"cs_n", "wave":"10.....1"},
-  {"name":"done", "wave":"0......10"}
+  {"name":"sample", "wave":"===========", "data":["0","1","2","3","4","5","6","7","8","9","10"]},
+  {"name":"phase", "wave":"==.====.===", "data":["0","1","2","3","5","0","1","4","0"]},
+  {"name":"cs_n", "wave":"10000011001"},
+  {"name":"busy", "wave":"01111100110"},
+  {"name":"done", "wave":"00000010001"}
 ]}
 ```
 
@@ -31,3 +27,4 @@ make fsm
 ```
 
 Testbench 检查完整读路径、选项锁存、等待、跳过可选阶段的写路径、片选与 `done` 单拍。成功打印 `RESULT: PASS fsm`。
+完整时序保存在 `sim/fsm.vcd`；测试命令还会逐列核对上图与 VCD。
