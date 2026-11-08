@@ -1,6 +1,6 @@
 # Flash Controller 核心练习
 
-本分支包含五道可独立完成的 Verilog 练习。每题的 `design.v` 只有模块接口；按题目文档实现模块后，运行对应 Testbench。题目聚焦原项目的 APB、SPI、三态、分频和状态机知识点，不要求拼成完整 Flash Controller。
+本分支包含八道可独立完成的 Verilog 练习。每题的 `design.v` 只有模块接口；按题目文档实现模块后，运行对应 Testbench。题目聚焦原项目的 APB、SPI、三态、分频、FIFO 和状态机知识点，不要求拼成完整 Flash Controller。
 
 ## 环境与运行
 
@@ -22,5 +22,8 @@ make EX=spi_tx run        # 另一种单题运行方式
 | [spi_tx](exercises/spi_tx/README.md) | SPI 单线 MSB 先发、发送握手 |
 | [tristate](exercises/tristate/README.md) | `inout` 三态与单线/四线方向 |
 | [fsm](exercises/fsm/README.md) | Flash 事务状态机与分支 |
+| [sync_fifo](exercises/sync_fifo/README.md) | 同步 FIFO 满空判断、同拍读写 |
+| [spi_rx](exercises/spi_rx/README.md) | SPI 单线接收与 MSB 先收 |
+| [dummy](exercises/dummy/README.md) | SPI dummy 周期计数 |
 
 原项目的完整端到端实现和测试仍可从 `main` 分支查看。

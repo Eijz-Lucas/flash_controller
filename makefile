@@ -2,7 +2,7 @@ SHELL := /bin/sh
 IVERILOG ?= iverilog
 VVP ?= vvp
 EX ?= apb
-CASES := apb clkdiv spi_tx tristate fsm
+CASES := apb clkdiv spi_tx tristate fsm sync_fifo spi_rx dummy
 
 .PHONY: all list run $(CASES)
 all: $(CASES)
