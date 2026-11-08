@@ -14,7 +14,8 @@ begin @(negedge clk); fall_pulse=1; @(posedge clk); #1;
 integer i;
 reg [7:0] word=8'hA6;
 initial begin
-    #2; check(busy === 0 && done === 0,"reset idle"); rst_n=1;
+    #1; rst_n=1; #1; rst_n=0;
+    #1; check(busy === 0 && done === 0,"reset idle"); rst_n=1;
     @(negedge clk); data=word; start=1;
     @(posedge clk); #1; check(busy === 1 && sdo === word[7],"start exposes MSB");
     @(negedge clk); start=0;

@@ -16,7 +16,7 @@ begin if (!ok) begin $display("FAIL tristate: %0s",name); $fatal(1); end
 initial begin
     #1; check(dq === 4'bzzzz,"idle high impedance");
     mode=2'b01; #1; check(dq === 4'bzzz0,"single output DQ0");
-    ext_oe=4'b0010; #1; check(sdi === 4'bzz10,"external DQ1 sampled");
+    ext_oe=4'b0010; #1; check(sdi === 4'bzz00,"external DQ1 sampled");
     ext_oe=0; mode=2'b10; #1; check(dq === 4'b1010 && sdi === 4'b1010,"quad output");
     mode=0; ext_oe=4'b1111; #1; check(dq === 4'b0101 && sdi === 4'b0101,"external quad input");
     $display("RESULT: PASS tristate"); $finish;

@@ -14,10 +14,10 @@ begin
     $display("PASS apb: %0s",name);
 end endtask
 initial begin
-    #2; rst_n=1;
-    #1; check(clk_div === 8'd3 && command_pulse === 1'b0,"reset");
+    #1; rst_n=1; #1; rst_n=0;
+    #1; check(clk_div === 8'd3 && command_pulse === 1'b0,"reset"); rst_n=1;
     @(negedge clk); psel=1; pwrite=1; paddr=8'h00; pwdata=32'h0000002a;
-    #1; check(pready === 1'b0,"setup has no ready");
+    #1; check(pready === 1'b0 && clk_div === 8'd3,"setup has no ready or write");
     @(negedge clk); penable=1;
     #1; check(pready === 1'b1 && pslverr === 1'b0,"write access response");
     @(negedge clk); psel=0; penable=0; pwrite=0;

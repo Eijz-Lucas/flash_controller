@@ -9,7 +9,8 @@ task check(input bit ok, input [255:0] name);
 begin if (!ok) begin $display("FAIL clkdiv: %0s",name); $fatal(1); end
       $display("PASS clkdiv: %0s",name); end endtask
 initial begin
-    #2; check(sclk === 0 && rise_pulse === 0 && fall_pulse === 0,"reset idle");
+    #1; rst_n=1; #1; rst_n=0;
+    #1; check(sclk === 0 && rise_pulse === 0 && fall_pulse === 0,"reset idle");
     rst_n=1;
     @(negedge clk); en=1;
     @(posedge clk); #1; check(sclk === 0 && rise_pulse === 0,"half period first tick");

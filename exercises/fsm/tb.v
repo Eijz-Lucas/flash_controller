@@ -12,7 +12,8 @@ begin if (!ok) begin $display("FAIL fsm: %0s",name); $fatal(1); end
 task step;
 begin @(posedge clk); #1; end endtask
 initial begin
-    #2; check(phase === 0 && cs_n === 1 && busy === 0,"reset idle"); rst_n=1;
+    #1; rst_n=1; #1; rst_n=0;
+    #1; check(phase === 0 && cs_n === 1 && busy === 0,"reset idle"); rst_n=1;
     @(negedge clk); start=1; has_addr=1; has_dummy=1; do_read=1;
     step(); check(phase === 1 && cs_n === 0 && busy === 1,"command phase");
     @(negedge clk); start=0; has_addr=0; has_dummy=0; do_read=0;
