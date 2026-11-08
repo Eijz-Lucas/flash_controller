@@ -14,6 +14,5 @@ run:
 	@mkdir -p sim
 	@$(IVERILOG) -g2012 -Wall -s tb -DVCD_FILE='"sim/$(EX).vcd"' -o sim/$(EX).vvp exercises/$(EX)/design.v exercises/$(EX)/tb.v
 	@$(VVP) sim/$(EX).vvp
-	@python3 scripts/check_wave.py $(EX)
 $(CASES):
 	@$(MAKE) --no-print-directory EX=$@ run

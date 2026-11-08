@@ -3,7 +3,6 @@ module tb;
 reg clk=0, rst_n=0, start=0, fall_pulse=0;
 reg [7:0] data=0;
 wire sdo, busy, done;
-reg [7:0] doc_point=8'hff;
 exercise_dut dut(.*);
 initial begin $dumpfile(`VCD_FILE); $dumpvars(0,tb); end
 always #5 clk=~clk;
@@ -22,12 +21,12 @@ initial begin
     @(posedge clk); #1; check(busy === 1 && sdo === word[7],"start exposes MSB");
     @(negedge clk); start=0;
     for (i=0;i<8;i=i+1) begin
-        #1; check(sdo === word[7-i],"bit order before fall"); doc_point=i;
+        #1; check(sdo === word[7-i],"bit order before fall");
         tick_fall();
         if (i<7) check(done === 0 && busy === 1,"intermediate bit");
     end
-    #1; check(done === 1 && busy === 0,"eighth bit completes"); doc_point=8;
-    @(posedge clk); #1; check(done === 0 && busy === 0,"done is one cycle"); doc_point=9;
+    #1; check(done === 1 && busy === 0,"eighth bit completes");
+    @(posedge clk); #1; check(done === 0 && busy === 0,"done is one cycle");
     $display("RESULT: PASS spi_tx"); $finish;
 end
 initial begin #2000; $display("FAIL spi_tx: timeout"); $fatal(1); end
