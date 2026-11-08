@@ -6,12 +6,12 @@
 
 ## 功能波形
 
-每列是 `clk` 一个周期，显示上升沿后的值。`start` 后每隔一拍采样一次 `sdi`，顺序接收 `8'hA6 = 1010_0110`。`data` 展示逐次移入后的值；第 8 次 `rise_pulse` 后 `done` 单拍有效。
+每列是 `clk` 一个周期，显示上升沿后的值。`start` 后每隔一拍采样一次 `sdi`，顺序接收 `8'hA6 = 1010_0110`。第 4 列忙时再次拉高 `start`，接收不被打断。`data` 展示逐次移入后的值；第 8 次 `rise_pulse` 后 `done` 单拍有效。
 
 ```wavedrom
 { "signal": [
   {"name":"clk", "wave":"p................."},
-  {"name":"start", "wave":"010..............."},
+  {"name":"start", "wave":"01010............."},
   {"name":"rise_pulse", "wave":"0.1010101010101010"},
   {"name":"sdi", "wave":"0.1.0.1.0...1...0."},
   {"name":"data", "wave":"=.=.=.=.=.=.=.=.=.", "data":["00","01","02","05","0A","14","29","53","A6"]},
@@ -29,4 +29,4 @@ make spi_rx
 # 波形：sim/spi_rx.vcd
 ```
 
-Testbench 逐位检查移位值、脉冲间保持、第八位完成、`done` 单拍及空闲时忽略输入。通过时打印 `RESULT: PASS spi_rx`；失败时打印 `FAIL spi_rx` 并非零退出。
+Testbench 逐位检查移位值、脉冲间保持、忙时忽略 `start`、第八位完成、`done` 单拍及空闲时忽略输入。通过时打印 `RESULT: PASS spi_rx`；失败时打印 `FAIL spi_rx` 并非零退出。

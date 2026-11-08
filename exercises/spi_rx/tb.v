@@ -23,7 +23,7 @@ initial begin
         check(data === expected,"MSB first shift");
         if (i>0) check(busy === 1 && done === 0,"receiving");
         else check(busy === 0 && done === 1 && data === word,"eighth bit completes");
-        @(negedge clk); rise_pulse=0;
+        @(negedge clk); rise_pulse=0; start=(i==7);
         @(posedge clk); #1; check(data === expected && done === 0,"hold between pulses");
     end
     @(negedge clk); rise_pulse=1; sdi=1;

@@ -30,6 +30,9 @@ initial begin
     step(0,1,0); check(count === 0 && dout === 8'h55,"underflow ignored");
     step(1,1,8'h66); check(count === 1 && dout === 8'h55,"empty simultaneous only writes");
     step(0,1,0); check(count === 0 && dout === 8'h66,"read after empty simultaneous");
+    step(1,0,8'h77); check(count === 1,"push 77");
+    step(1,1,8'h88); check(count === 1 && dout === 8'h77,"ordinary simultaneous exchange");
+    step(0,1,0); check(count === 0 && dout === 8'h88,"read exchanged 88");
     $display("RESULT: PASS sync_fifo"); $finish;
 end
 initial begin #2000; $display("FAIL sync_fifo: timeout"); $fatal(1); end

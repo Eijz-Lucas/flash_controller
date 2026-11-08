@@ -6,13 +6,13 @@
 
 ## 功能波形
 
-每列是 `clk` 一个周期，显示上升沿后的值。先启动 3 个 dummy 周期，三个 `tick` 使 `remaining` 从 3 降到 0；随后启动 0 周期事务，立即产生另一个单拍 `done`。
+每列是 `clk` 一个周期，显示上升沿后的值。先启动 3 个 dummy 周期；第 5 列忙时以 `cycles=7` 再次启动会被忽略。三个 `tick` 使 `remaining` 从 3 降到 0；随后启动 0 周期事务，立即产生另一个单拍 `done`。
 
 ```wavedrom
 { "signal": [
   {"name":"clk", "wave":"p.........."},
-  {"name":"start", "wave":"010......10"},
-  {"name":"cycles", "wave":"==.......=.", "data":["0","3","0"]},
+  {"name":"start", "wave":"010.10...10"},
+  {"name":"cycles", "wave":"==..=....=.", "data":["0","3","7","0"]},
   {"name":"tick", "wave":"0..101010.."},
   {"name":"remaining", "wave":"==.=.=.=...", "data":["0","3","2","1","0"]},
   {"name":"busy", "wave":"01.....0..."},
@@ -29,4 +29,4 @@ make dummy
 # 波形：sim/dummy.vcd
 ```
 
-Testbench 检查复位、仅 tick 递减、终点 `done`、零周期立即完成及脉冲清除。通过时打印 `RESULT: PASS dummy`；失败时打印 `FAIL dummy` 并非零退出。
+Testbench 检查复位、仅 tick 递减、忙时忽略新启动、终点 `done`、零周期立即完成及脉冲清除。通过时打印 `RESULT: PASS dummy`；失败时打印 `FAIL dummy` 并非零退出。
